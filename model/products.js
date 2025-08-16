@@ -10,11 +10,11 @@ function list_products() {
 }
 
 function getProduct(product_id) {
-
-    var q = "SELECT * FROM products WHERE id = '" + product_id + "';";
-
-    return db.one(q);
+    // FIX: Use parameterized queries to prevent SQL injection
+    const q = "SELECT * FROM products WHERE id = $1;";
+    return db.one(q, [product_id]);
 }
+// This fix uses a parameterized query (with $1 as a placeholder) and passes the user input as a separate parameter array to the database driver. This ensures that the input is properly escaped and cannot alter the structure of the SQL statement, fully mitigating SQL injection risks.
 
 function search(query) {
 
